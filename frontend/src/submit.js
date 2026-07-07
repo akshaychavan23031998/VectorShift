@@ -6,12 +6,15 @@ const selector = (state) => ({
   edges: state.edges,
 });
 
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || 'https://pipeline-builder-zeta.vercel.app';
+
 export const SubmitButton = () => {
   const { nodes, edges } = useStore(selector, shallow);
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch('https://vectorshift-api.onrender.com/pipelines/parse', {
+      const response = await fetch(`${API_BASE_URL}/pipelines/parse`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nodes, edges }),
@@ -23,11 +26,12 @@ export const SubmitButton = () => {
 
       const data = await response.json();
       const dagStatus = data.is_dag ? '✅ Yes' : '❌ No';
+
       alert(
         `Pipeline Analysis\n\n` +
-        `Nodes: ${data.num_nodes}\n` +
-        `Edges: ${data.num_edges}\n` +
-        `Is DAG: ${dagStatus}`
+          `Nodes: ${data.num_nodes}\n` +
+          `Edges: ${data.num_edges}\n` +
+          `Is DAG: ${dagStatus}`
       );
     } catch (error) {
       alert(`Failed to analyze pipeline.\n\n${error.message}`);
