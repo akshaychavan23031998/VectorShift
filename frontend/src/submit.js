@@ -6,8 +6,7 @@ const selector = (state) => ({
   edges: state.edges,
 });
 
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL || 'https://pipeline-builder-zeta.vercel.app';
+const API_BASE_URL = 'https://pipeline-builder-zeta.vercel.app';
 
 export const SubmitButton = () => {
   const { nodes, edges } = useStore(selector, shallow);
